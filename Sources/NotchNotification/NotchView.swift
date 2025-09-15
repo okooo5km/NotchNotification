@@ -62,8 +62,8 @@ struct NotchView: View {
                 height: notchSize.height
             )
             .shadow(
-                color: .black.opacity(([.opened].contains(vm.status)) ? 1 : 0),
-                radius: 16
+                color: .black.opacity(([.opened].contains(vm.status)) ? 0.2 : 0),
+                radius: 4
             )
     }
 

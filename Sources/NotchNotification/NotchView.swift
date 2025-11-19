@@ -20,7 +20,7 @@ struct NotchView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .top) {
+        let content = ZStack(alignment: .top) {
             notch
                 .zIndex(0)
                 .disabled(true)
@@ -46,6 +46,16 @@ struct NotchView: View {
         .animation(vm.animation, value: vm.status)
         .preferredColorScheme(.dark)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+
+        if let onTap = vm.onTap {
+            Button(action: onTap) {
+                content
+            }
+            .buttonStyle(.plain)
+            .focusable(false)
+        } else {
+            content
+        }
     }
 
     var notch: some View {
@@ -96,7 +106,7 @@ struct NotchView: View {
             let tlCtrlPoint2 = CGPoint(x: tl.x + topCornerRadius - topCornerRadius * topFactor, y: tr.y)
 
             path.move(to: tl)
-            path.addLine(to: tr) // Top edge
+            path.addLine(to: tr)  // Top edge
 
             path.addCurve(
                 to: CGPoint(x: tr.x - topCornerRadius, y: tr.y + topCornerRadius),

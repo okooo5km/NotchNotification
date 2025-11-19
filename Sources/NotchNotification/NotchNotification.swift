@@ -8,22 +8,24 @@ import SwiftUI
 let defaultInterval: TimeInterval = 2
 
 public enum NotchNotification {
-    public static func present(message: String, interval: TimeInterval = defaultInterval) {
+    public static func present(message: String, interval: TimeInterval = defaultInterval, onTap: (() -> Void)? = nil) {
         present(
             bodyView: Text(message),
-            interval: interval
+            interval: interval,
+            onTap: onTap
         )
     }
 
-    public static func present(error: Error, interval: TimeInterval = defaultInterval) {
-        present(error: error.localizedDescription, interval: interval)
+    public static func present(error: Error, interval: TimeInterval = defaultInterval, onTap: (() -> Void)? = nil) {
+        present(error: error.localizedDescription, interval: interval, onTap: onTap)
     }
 
-    public static func present(error: String, interval: TimeInterval = defaultInterval) {
+    public static func present(error: String, interval: TimeInterval = defaultInterval, onTap: (() -> Void)? = nil) {
         present(
             trailingView: Image(systemName: "xmark").foregroundStyle(.red),
             bodyView: Text(error),
-            interval: interval
+            interval: interval,
+            onTap: onTap
         )
     }
 
@@ -32,24 +34,31 @@ public enum NotchNotification {
         trailingView: some View = EmptyView(),
         bodyView: some View = EmptyView().frame(width: 0, height: 0),
         interval: TimeInterval = 3,
-        animated: Bool = true
+        animated: Bool = true,
+        onTap: (() -> Void)? = nil
     ) {
-        let leadingView = leadingView
+        let leadingView =
+            leadingView
             .foregroundStyle(.white)
             .font(.system(.body, design: .rounded).weight(.bold))
-        let trailingView = trailingView
+        let trailingView =
+            trailingView
             .foregroundStyle(.white)
             .font(.system(.body, design: .rounded).weight(.bold))
-        let bodyView = bodyView
+        let bodyView =
+            bodyView
             .foregroundStyle(.white)
             .font(.system(.body, design: .rounded))
 
-        guard let context = NotificationContext(
-            headerLeadingView: leadingView,
-            headerTrailingView: trailingView,
-            bodyView: bodyView,
-            animated: animated
-        ) else {
+        guard
+            let context = NotificationContext(
+                headerLeadingView: leadingView,
+                headerTrailingView: trailingView,
+                bodyView: bodyView,
+                animated: animated,
+                onTap: onTap
+            )
+        else {
             return
         }
 

@@ -9,10 +9,11 @@ class NotchViewModel: NSObject, ObservableObject {
     let bodyView: AnyView
     let cornerRadius: CGFloat
     let animated: Bool
+    let onTap: (() -> Void)?
 
     var referencedWindow: NotchWindowController? = nil
 
-    init(screen: NSScreen, headerLeadingView: AnyView, headerTrailingView: AnyView, bodyView: AnyView, animated: Bool) {
+    init(screen: NSScreen, headerLeadingView: AnyView, headerTrailingView: AnyView, bodyView: AnyView, animated: Bool, onTap: (() -> Void)?) {
         let headerView = NotchHeaderView(
             deviceNotchWidth: screen.notchSize.width,
             height: screen.headerHeight,
@@ -39,6 +40,7 @@ class NotchViewModel: NSObject, ObservableObject {
 
         cornerRadius = min(ceil(notchOpenedSize.height / 3), 16)
         self.animated = animated
+        self.onTap = onTap
 
         super.init()
     }
@@ -48,14 +50,16 @@ class NotchViewModel: NSObject, ObservableObject {
         headerLeadingView: some View,
         headerTrailingView: some View,
         bodyView: some View,
-        animated: Bool
+        animated: Bool,
+        onTap: (() -> Void)?
     ) {
         self.init(
             screen: screen,
             headerLeadingView: AnyView(headerLeadingView),
             headerTrailingView: AnyView(headerTrailingView),
             bodyView: AnyView(bodyView),
-            animated: animated
+            animated: animated,
+            onTap: onTap
         )
     }
 

@@ -15,16 +15,18 @@ struct NotificationContext {
     let headerTrailingView: AnyView
     let bodyView: AnyView
     let animated: Bool
+    let onTap: (() -> Void)?
 
-    init(screen: NSScreen, headerLeadingView: AnyView, headerTrailingView: AnyView, bodyView: AnyView, animated: Bool) {
+    init(screen: NSScreen, headerLeadingView: AnyView, headerTrailingView: AnyView, bodyView: AnyView, animated: Bool, onTap: (() -> Void)?) {
         self.screen = screen
         self.headerLeadingView = headerLeadingView
         self.headerTrailingView = headerTrailingView
         self.bodyView = bodyView
         self.animated = animated
+        self.onTap = onTap
     }
 
-    init?(headerLeadingView: AnyView, headerTrailingView: AnyView, bodyView: AnyView, animated: Bool) {
+    init?(headerLeadingView: AnyView, headerTrailingView: AnyView, bodyView: AnyView, animated: Bool, onTap: (() -> Void)?) {
         let mouseLocation = NSEvent.mouseLocation
         let screens = NSScreen.screens
         let screenWithMouse = screens.first { NSMouseInRect(mouseLocation, $0.frame, false) }
@@ -37,7 +39,8 @@ struct NotificationContext {
             headerLeadingView: headerLeadingView,
             headerTrailingView: headerTrailingView,
             bodyView: bodyView,
-            animated: animated
+            animated: animated,
+            onTap: onTap
         )
     }
 
@@ -45,13 +48,15 @@ struct NotificationContext {
         headerLeadingView: some View,
         headerTrailingView: some View,
         bodyView: some View,
-        animated: Bool = true
+        animated: Bool = true,
+        onTap: (() -> Void)? = nil
     ) {
         self.init(
             headerLeadingView: AnyView(headerLeadingView),
             headerTrailingView: AnyView(headerTrailingView),
             bodyView: AnyView(bodyView),
-            animated: animated
+            animated: animated,
+            onTap: onTap
         )
     }
 
@@ -64,7 +69,8 @@ struct NotificationContext {
             headerLeadingView: headerLeadingView,
             headerTrailingView: headerTrailingView,
             bodyView: bodyView,
-            animated: animated
+            animated: animated,
+            onTap: onTap
         )
         let view = NotchView(vm: viewModel)
         let viewController = NotchViewController(view)
